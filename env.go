@@ -1,13 +1,18 @@
 package zdpgo_env
 
 import (
+	"github.com/zhangdapeng520/zdpgo_env/libs/envconfig"
 	"github.com/zhangdapeng520/zdpgo_env/libs/godotenv"
 	"os"
 )
 
 // Env 操作环境变量的核心对象
 type Env struct {
+	// 加载配置文件中的变量到环境变量
 	Load func(filenames ...string) (err error)
+
+	// 读取环境变量到配置对象
+	Read func(config interface{}, opts ...envconfig.Options) error
 }
 
 func New() *Env {
@@ -15,6 +20,11 @@ func New() *Env {
 
 	// 加载方法
 	e.Load = godotenv.Load
+
+	// 读取配置的方法
+	e.Read = envconfig.Parse
+
+	// 返回环境变量对象
 	return &e
 }
 
