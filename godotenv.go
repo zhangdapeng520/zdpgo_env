@@ -1,4 +1,4 @@
-package godotenv
+package zdpgo_env
 
 import (
 	"bufio"
@@ -22,7 +22,7 @@ func Load(filenames ...string) (err error) {
 	for _, filename := range filenames {
 		err = loadFile(filename, false)
 		if err != nil {
-			return // return early on a spazout
+			return
 		}
 	}
 	return
@@ -51,8 +51,10 @@ func Overload(filenames ...string) (err error) {
 	return
 }
 
-// Read all env (with same file loading semantics as Load) but return values as
-// a map rather than automatically writing values into env
+// Read 读取所有文件中的环境变量
+// @param filenames 环境变量文件列表
+// @return envMap 环境变量字典
+// @return err 错误信息
 func Read(filenames ...string) (envMap map[string]string, err error) {
 	filenames = filenamesOrDefault(filenames)
 	envMap = make(map[string]string)
@@ -73,7 +75,7 @@ func Read(filenames ...string) (envMap map[string]string, err error) {
 	return
 }
 
-// Parse 解析文件，转换为map对象
+// Parse 解析输入流，转换为map对象
 func Parse(r io.Reader) (envMap map[string]string, err error) {
 	// 创建map对象
 	envMap = make(map[string]string)
@@ -109,18 +111,15 @@ func Parse(r io.Reader) (envMap map[string]string, err error) {
 	return
 }
 
-//Unmarshal 读取env文件并解析，返回一个map字典
+//Unmarshal 读取env字符串数据并解析，返回一个map字典
 func Unmarshal(str string) (envMap map[string]string, err error) {
 	return Parse(strings.NewReader(str))
 }
 
-// Exec loads env vars from the specified filenames (empty map falls back to default)
-// then executes the cmd specified.
-//
-// Simply hooks up os.Stdin/err/out to the command and calls Run()
-//
-// If you want more fine grained control over your command it's recommended
-// that you use `Load()` or `Read()` and the `os/exec` package yourself.
+// Exec 加载环境变量文件列表，然后执行CMD命令
+// @param filenames 环境变量文件列表
+// @param cmd 命令
+// @param cmd cmdArgs 参数
 func Exec(filenames []string, cmd string, cmdArgs []string) error {
 	Load(filenames...)
 
@@ -131,7 +130,9 @@ func Exec(filenames []string, cmd string, cmdArgs []string) error {
 	return command.Run()
 }
 
-// Write serializes the given environment and writes it to a file
+// Write 写入环境变量
+// @param envMap 环境变量字典
+// @param filename 环境变量存储文件
 func Write(envMap map[string]string, filename string) error {
 	content, err := Marshal(envMap)
 	if err != nil {
@@ -173,23 +174,34 @@ func filenamesOrDefault(filenames []string) []string {
 }
 
 // 加载配置文件中的环境变量
-func loadFile(filename string, overload bool) error {
+func loadFile(filename string, overload bool) (err error) {
+	var (
+		envMap = make(map[string]string)
+	)
+
 	// 读取文件中配置，转换为map
-	envMap, err := readFile(filename)
+	envMap, err = readFile(filename)
 	if err != nil {
-		return err
+		return
 	}
 
+	// 当前的环境变量
 	currentEnv := map[string]bool{}
+
+	// 系统的环境变量
 	rawEnv := os.Environ()
+
+	// 将系统当前的环境变量存储到map中
 	for _, rawEnvLine := range rawEnv {
 		key := strings.Split(rawEnvLine, "=")[0]
 		currentEnv[key] = true
 	}
 
+	// 遍历读取到的文件中的环境变量
 	for key, value := range envMap {
+		// 如果当前环境变量中不存在该key，或者是覆盖写
 		if !currentEnv[key] || overload {
-			os.Setenv(key, value)
+			os.Setenv(key, value) // 写入环境变量
 		}
 	}
 
