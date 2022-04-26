@@ -48,11 +48,12 @@ func TestEnv_ReadWrite(t *testing.T) {
 	e.ReadDefault()
 
 	// 修改
-	e.AllEnvMap["host"] = "127.0.0.1"
+	e.FileEnvMap[".env"]["host"] = "127.0.0.1"
 
 	// 写入环境变量
 	err := e.Write(".env")
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 }

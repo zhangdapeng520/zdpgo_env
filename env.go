@@ -3,7 +3,6 @@ package zdpgo_env
 import (
 	"errors"
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_env/libs/envconfig"
 	"os"
 	"strings"
 )
@@ -37,8 +36,8 @@ func NewWithConfig(config Config) (e *Env) {
 // @param v 结构体对象
 // @param opts 参数选项
 // @return opts 参数选项
-func (e *Env) Parse(v interface{}, opts ...envconfig.Options) (err error) {
-	err = envconfig.Parse(v, opts...)
+func (e *Env) Parse(v interface{}, opts ...Options) (err error) {
+	err = ParseConfig(v, opts...)
 	return
 }
 
@@ -52,7 +51,7 @@ func (e *Env) ReadFiles(filenames ...string) (err error) {
 
 // ReadDefault 读取默认的环境变量配置文件
 func (e *Env) ReadDefault() (err error) {
-	err = Load(".env")
+	err = e.Read(".env")
 	e.FindAll() // 将所有环境变量同步到EnvMap中
 	return
 }

@@ -1,4 +1,4 @@
-package envconfig
+package zdpgo_env
 
 import (
 	"encoding"
@@ -170,7 +170,7 @@ func getEnvironment(opts []Options) map[string]string {
 
 // Parse parses a struct containing `env` tags and loads its values from
 // environment variables.
-func Parse(v interface{}, opts ...Options) error {
+func ParseConfig(v interface{}, opts ...Options) error {
 	return ParseWithFuncs(v, map[reflect.Type]ParserFunc{}, opts...)
 }
 
@@ -216,7 +216,7 @@ func doParse(ref reflect.Value, funcMap map[reflect.Type]ParserFunc, opts []Opti
 			continue
 		}
 		if reflect.Struct == refField.Kind() && refField.CanAddr() && refField.Type().Name() == "" {
-			if err := Parse(refField.Addr().Interface(), optsWithPrefix(refType.Field(i), opts)...); err != nil {
+			if err := ParseConfig(refField.Addr().Interface(), optsWithPrefix(refType.Field(i), opts)...); err != nil {
 				return err
 			}
 			continue

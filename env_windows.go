@@ -1,4 +1,4 @@
-package envconfig
+package zdpgo_env
 
 import "strings"
 

@@ -24,6 +24,9 @@ func (e *Env) loadFile(filename string, overload bool) (err error) {
 		envMap = make(map[string]string)
 	)
 
+	// 创建文件对应的环境变量map
+	e.FileEnvMap[filename] = make(map[string]string)
+
 	// 读取文件中配置，转换为map
 	envMap, err = readFile(filename)
 	if err != nil {
@@ -44,6 +47,8 @@ func (e *Env) loadFile(filename string, overload bool) (err error) {
 
 	// 遍历读取到的文件中的环境变量
 	for key, value := range envMap {
+		e.FileEnvMap[filename][key] = value // 将数据存储进文件对应的map
+
 		// 如果当前环境变量中不存在该key，或者是覆盖写
 		if !currentEnv[key] || overload {
 			os.Setenv(key, value) // 写入环境变量
