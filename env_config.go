@@ -168,9 +168,13 @@ func getEnvironment(opts []Options) map[string]string {
 	return opts[0].Environment
 }
 
-// Parse parses a struct containing `env` tags and loads its values from
-// environment variables.
+// ParseConfig 从环境变量读取env配置写入到env标签对应的内容
 func ParseConfig(v interface{}, opts ...Options) error {
+	return ParseWithFuncs(v, map[reflect.Type]ParserFunc{}, opts...)
+}
+
+// ParseConfig 从环境变量读取env配置写入到env标签对应的内容
+func (e *Env) ParseConfig(v interface{}, opts ...Options) error {
 	return ParseWithFuncs(v, map[reflect.Type]ParserFunc{}, opts...)
 }
 
