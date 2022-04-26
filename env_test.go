@@ -57,3 +57,19 @@ func TestEnv_ReadWrite(t *testing.T) {
 		return
 	}
 }
+
+func TestEnv_WriteNew(t *testing.T) {
+	e := getEnv()
+
+	envMap := map[string]string{
+		"a": "bbb",
+		"b": "ccc",
+	}
+
+	// 写入环境变量
+	err := e.WriteNew(".env1", envMap)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+}

@@ -1,4 +1,2 @@
-github.com/caarlos0/env/v6 v6.9.1 h1:zOkkjM0F6ltnQ5eBX6IPI41UP/KDGEK7rRPwGCNos8k=
-github.com/caarlos0/env/v6 v6.9.1/go.mod h1:hvp/ryKXKipEkcuYjs9mI4bBCg+UI0Yhgm5Zu0ddvwc=
-github.com/zhangdapeng520/zdpgo_test v0.1.0 h1:VUXnng6P6tlzQADwLXONU/HdeUYtoRUjD5B7L3texnE=
-github.com/zhangdapeng520/zdpgo_test v0.1.0/go.mod h1:FZsHO6yLLfm0LQ745hwaGX2t/ifZ0i6/RTQw4Raj24k=
+github.com/zhangdapeng520/zdpgo_test v0.1.1 h1:j2G6pcmU65gpGBGWTywXWmduOzhhbHEn4NVznZw6K6Q=
+github.com/zhangdapeng520/zdpgo_test v0.1.1/go.mod h1:FZsHO6yLLfm0LQ745hwaGX2t/ifZ0i6/RTQw4Raj24k=

@@ -77,6 +77,22 @@ func (e *Env) Write(filename string) (err error) {
 	return e.Save(filename)
 }
 
+// WriteNew 将环境变量map写入到新的配置文件中
+func (e *Env) WriteNew(filename string, envMap map[string]string) (err error) {
+	// 将数据写入到环境变量的配置文件
+	err = Write(envMap, filename)
+	if err != nil {
+		return
+	}
+
+	// 重新将配置文件中的环境变量读取并写入系统环境变量
+	err = e.Read(filename)
+	if err != nil {
+		return
+	}
+	return
+}
+
 // Get 根据键获取环境变量中的值
 func (e *Env) Get(key string) string {
 	result := os.Getenv(key)

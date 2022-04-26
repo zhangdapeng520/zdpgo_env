@@ -1,12 +1,3 @@
-# zdpgo_env
-Golang读取环境变量的库
-
-## 版本历史
-- v0.1.1 2022年4月26日 新增：写入环境变量到新的配置文件
-
-## 使用示例
-### 写入环境变量
-```go
 package main
 
 import (
@@ -34,4 +25,3 @@ func main() {
 	fmt.Println(e.Get("b"))
 	fmt.Println(e.Get("c"))
 }
-```

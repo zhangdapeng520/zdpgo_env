@@ -1,7 +1,7 @@
 package zdpgo_env
 
 import (
-	"github.com/zhangdapeng520/zdpgo_test/libs/assert"
+	"github.com/zhangdapeng520/zdpgo_test"
 	"testing"
 )
 
@@ -18,7 +18,7 @@ func TestEnv_ParseConfig(t *testing.T) {
 	e.ParseConfig(&cfg) // 解析配置为结构体
 
 	// 创建断言对象
-	assert := assert.New(t)
+	test := zdpgo_test.NewWirthConfig(zdpgo_test.Config{TestObj: t})
 
 	// 创建表格
 	var tests = []struct {
@@ -29,9 +29,9 @@ func TestEnv_ParseConfig(t *testing.T) {
 	}
 
 	// 遍历表格数据
-	for _, test := range tests {
+	for _, testData := range tests {
 		// 断言
-		assert.Equal(cfg.Host, test.host)
-		assert.Equal(cfg.Port, test.port)
+		test.Assert.Equal(cfg.Host, testData.host)
+		test.Assert.Equal(cfg.Port, testData.port)
 	}
 }
